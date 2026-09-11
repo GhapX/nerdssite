@@ -25,7 +25,7 @@ const geminiModels = [...new Set([
 const aiRequests = new Map();
 
 app.set('trust proxy', 1);
-const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173,https://nerds-lilac.vercel.app')
   .split(',')
   .map(origin => origin.trim())
   .filter(Boolean);
