@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bold, BarChart3, BookOpen, CalendarDays, FileText, FlaskConical, Handshake, ImagePlus, Italic, List, Pencil, Plus, Save, Sparkles, Trash2, Type, Users, X } from 'lucide-react';
 import { contentApi, type AdminRecord, type AdminResource } from '../services/api';
 
