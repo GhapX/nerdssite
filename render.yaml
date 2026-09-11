@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: ners-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run start:api
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_ORIGIN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.7-flash
+      - key: GEMINI_FALLBACK_MODELS
+        value: gemini-2.5-flash,gemini-3.5-flash-lite
