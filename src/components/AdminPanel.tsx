@@ -133,7 +133,7 @@ export default function AdminPanel() {
     try {
       setItems(await (resource === 'proposals'
         ? contentApi.adminList<AdminRecord>(resource)
-        : contentApi.list<AdminRecord>(resource)));
+        : contentApi.list<AdminRecord>(`${resource}?t=${Date.now()}`)));
       setError('');
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : 'Não foi possível carregar os dados.');
