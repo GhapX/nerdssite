@@ -24,14 +24,11 @@ const geminiModels = [...new Set([
 ])];
 const aiRequests = new Map();
 
-app.set('trust proxy', 1);
 const allowedOrigins = [
   'http://localhost:5173',
   'https://nerds-lilac.vercel.app'
-]
-  .split(',')
-  .map(origin => origin.trim())
-  .filter(Boolean);
+];
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
