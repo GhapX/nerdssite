@@ -3,6 +3,7 @@ import { ArrowDown, ArrowUpRight, FlaskConical, Instagram, Search, Users } from 
 import { MEMBERS, PROJECTS } from './data/portfolio';
 import NewsArticlePage from './components/NewsArticlePage';
 import NewsSection from './components/NewsSection';
+import VacancyArticlePage from './components/VacancyArticlePage';
 import VacancySection from './components/VacancySection';
 import nerdsLogo from './assets/NerdsLogo.png';
 import './styles.css';
@@ -21,7 +22,10 @@ const initials = (name: string) =>
 export default function App() {
   const [memberSearch, setMemberSearch] = useState('');
   const newsRoute = window.location.pathname.match(/^\/noticias\/([^/]+)\/?$/);
+  const vacancyRoute = window.location.pathname.match(/^\/vagas\/([^/]+)\/?$/);
   const newsId = newsRoute ? decodeURIComponent(newsRoute[1]) : null;
+  const vacancyId = vacancyRoute ? decodeURIComponent(vacancyRoute[1]) : null;
+  const isDetailPage = Boolean(newsId || vacancyId);
   const visibleMembers = useMemo(() => {
     const term = memberSearch.trim().toLocaleLowerCase('pt-BR');
     if (!term) return MEMBERS;
@@ -32,13 +36,13 @@ export default function App() {
     <div className="site-shell min-h-screen text-slate-200">
       <header className="site-nav sticky top-0 z-40 border-b border-white/10 bg-slate-950/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
-          <a href={newsId ? '/' : '#inicio'} className="site-brand flex shrink-0 items-center gap-3" aria-label="NERDS — início">
+          <a href={isDetailPage ? '/' : '#inicio'} className="site-brand flex shrink-0 items-center gap-3" aria-label="NERDS — início">
             <img src={nerdsLogo} alt="" className="site-brand__logo h-10 w-10 rounded-xl" />
             <span className="site-brand__name font-display text-lg font-bold text-white">NERDS<span className="ml-1 text-cyan-400">&lt;UFC&gt;</span></span>
           </a>
           <nav aria-label="Navegação principal" className="flex items-center gap-1 overflow-x-auto">
             {navigation.map(item => (
-              <a key={item.href} href={newsId ? `/${item.href}` : item.href} className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-cyan-300 sm:px-4">
+              <a key={item.href} href={isDetailPage ? `/${item.href}` : item.href} className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-cyan-300 sm:px-4">
                 {item.label}
               </a>
             ))}
@@ -47,7 +51,7 @@ export default function App() {
       </header>
 
       <main>
-        {newsId ? <NewsArticlePage newsId={newsId} /> : <>
+        {newsId ? <NewsArticlePage newsId={newsId} /> : vacancyId ? <VacancyArticlePage vacancyId={vacancyId} /> : <>
         <section id="inicio" className="home-hero relative isolate overflow-hidden">
           <div className="hero-grid pointer-events-none absolute inset-0" />
           <div className="home-hero__orb home-hero__orb--one" />
