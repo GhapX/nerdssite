@@ -30,8 +30,41 @@ const MEMBER_NAMES = [
   'YAGO THAYSON DE SOUSA'
 ];
 
-export const MEMBERS: Member[] = MEMBER_NAMES.map((name, index) => ({
-  id: index + 1,
-  name,
-  role: 'Integrante NERDS'
-}));
+const normalizeName = (name: string) => name
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLocaleLowerCase('pt-BR')
+  .replace(/[^a-z0-9]/g, '');
+
+const memberPhotos = import.meta.glob<string>('../assets/Fotos - Time NERDS 2026.2/*', {
+  eager: true,
+  query: '?url',
+  import: 'default'
+});
+
+const photoNameByMemberName: Record<string, string> = {
+  [normalizeName('Gabriela Lima Silva')]: normalizeName('Gabriel Lima Silva'),
+  [normalizeName('João Emanuel Leite Fortaleza')]: normalizeName('João Emanoel Leite Fortaleza'),
+  [normalizeName('Luis Rajzer')]: normalizeName('Luis Raizer'),
+  [normalizeName('Romeu Rôsso')]: normalizeName('Romeu Róseo Araújo'),
+  [normalizeName('Wallison Gomes Martins')]: normalizeName('Wallison Breno Gomes Martins')
+};
+
+const photoUrlByName = new Map(
+  Object.entries(memberPhotos).map(([path, url]) => {
+    const filename = path.split('/').pop() ?? '';
+    const name = filename.replace(/\.[^.]+$/, '').split(' - ')[0];
+    return [normalizeName(name), url];
+  })
+);
+
+export const MEMBERS: Member[] = MEMBER_NAMES.map((name, index) => {
+  const photoName = photoNameByMemberName[normalizeName(name)] ?? normalizeName(name);
+
+  return {
+    id: index + 1,
+    name,
+    role: 'Integrante NERDS',
+    image: photoUrlByName.get(photoName)
+  };
+});
