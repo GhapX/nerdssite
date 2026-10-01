@@ -8,3 +8,6 @@ services:
       - type: rewrite
         source: /noticias/*
         destination: /index.html
+      - type: rewrite
+        source: /vagas/*
+        destination: /index.html

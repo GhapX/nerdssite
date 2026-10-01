@@ -4,6 +4,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "rewrites": [
-    { "source": "/noticias/(.*)", "destination": "/" }
+    { "source": "/noticias/(.*)", "destination": "/" },
+    { "source": "/vagas/(.*)", "destination": "/" }
   ]
 }
