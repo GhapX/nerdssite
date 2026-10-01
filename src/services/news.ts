@@ -25,7 +25,7 @@ export interface ActionNewsPage {
   empty: boolean;
 }
 
-export const ACTION_ID = '6f1b3d2b-8d27-4ec9-bd9c-b816f7db81c1';
+export const ACTION_ID = '5b2d1c81-e289-4524-bee2-16252549a382';
 const NEWS_ENDPOINT = 'https://gex.dev.nerds.cloudns.be/api/noticia';
 
 export async function fetchActionNews(page: number, size: number, signal: AbortSignal): Promise<ActionNewsPage> {
