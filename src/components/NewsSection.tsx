@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { AlertCircle, CalendarDays, ChevronLeft, ChevronRight, Eye, Heart, Newspaper, Share2 } from 'lucide-react';
-import { ActionNewsPage, fetchActionNews } from '../services/news';
+import { useEffect, useRef, useState } from 'react';
+import { AlertCircle, ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Newspaper, X } from 'lucide-react';
+import { fetchActionNews } from '../services/news';
+import type { ActionNews, ActionNewsPage } from '../services/news';
 
 const PAGE_SIZE = 6;
 
@@ -11,12 +12,68 @@ const formatDate = (value: string) => {
     : new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
 };
 
-const excerptFromHtml = (html: string) => {
-  const text = new DOMParser().parseFromString(html, 'text/html').body.textContent ?? '';
-  return text.replace(/\s+/g, ' ').trim();
+const plainTextFromHtml = (html: string) => {
+  const body = new DOMParser().parseFromString(html, 'text/html').body;
+  body.querySelectorAll('br').forEach(element => element.replaceWith('\n'));
+  body.querySelectorAll('li').forEach(element => element.prepend('• '));
+  body.querySelectorAll('p, li, h1, h2, h3, blockquote').forEach(element => element.append('\n'));
+
+  return (body.textContent ?? '')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 };
 
-const formatCount = (value: number | null) => value == null ? '—' : value.toLocaleString('pt-BR');
+const excerptFromHtml = (html: string) => plainTextFromHtml(html).replace(/\s+/g, ' ').trim();
+
+function NewsDetail({ news, onClose }: { news: ActionNews; onClose: () => void }) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const content = plainTextFromHtml(news.texto);
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/85 p-4 backdrop-blur-sm sm:p-8" role="presentation" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="news-dialog-title"
+        tabIndex={-1}
+        onClick={event => event.stopPropagation()}
+        onKeyDown={event => { if (event.key === 'Escape') onClose(); }}
+        className="relative mx-auto my-4 w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl sm:my-8"
+      >
+        <div className="relative aspect-[16/9] overflow-hidden bg-slate-800">
+          {news.imagemUrl ? (
+            <img src={news.imagemUrl} alt={news.descricaoImagem || news.titulo} className="h-full w-full object-cover" />
+          ) : (
+            <div className="flex h-full items-center justify-center text-cyan-300/70"><Newspaper size={44} strokeWidth={1.4} /></div>
+          )}
+          <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Fechar notícia" className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-slate-950/80 text-white backdrop-blur transition-colors hover:bg-slate-800">
+            <X size={19} />
+          </button>
+        </div>
+
+        <div className="p-6 sm:p-8">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-400">
+            <span className="inline-flex items-center gap-2"><CalendarDays size={15} />{formatDate(news.dataPublicacao)}</span>
+            {news.autorPublicacaoNome && <span>{news.autorPublicacaoNome}</span>}
+            {news.acaoSigla && <span className="rounded-md border border-cyan-300/20 bg-cyan-300/10 px-2 py-1 text-xs font-bold text-cyan-200">{news.acaoSigla}</span>}
+          </div>
+          <h2 id="news-dialog-title" className="font-display mt-4 text-2xl font-bold leading-tight text-white sm:text-3xl">{news.titulo}</h2>
+          {content && <p className="mt-6 whitespace-pre-line text-base leading-7 text-slate-300">{content}</p>}
+          {news.palavrasChaves?.length ? (
+            <div className="mt-7 flex flex-wrap gap-2 border-t border-white/10 pt-5">
+              {news.palavrasChaves.map(keyword => <span key={keyword} className="stack-tag">{keyword}</span>)}
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function NewsSection() {
   const [page, setPage] = useState<ActionNewsPage | null>(null);
@@ -24,6 +81,7 @@ export default function NewsSection() {
   const [retryKey, setRetryKey] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedNews, setSelectedNews] = useState<ActionNews | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -72,14 +130,23 @@ export default function NewsSection() {
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {page?.content.map(news => {
                 const excerpt = excerptFromHtml(news.texto);
-                const metrics = [
-                  { label: 'Visualizações', value: news.numeroVisualizacoes, Icon: Eye },
-                  { label: 'Curtidas', value: news.numeroCurtidas, Icon: Heart },
-                  { label: 'Compartilhamentos', value: news.numeroCompartilhamentos, Icon: Share2 }
-                ];
 
                 return (
-                  <article key={news.id} className="soft-card flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/80">
+                  <article
+                    key={news.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-haspopup="dialog"
+                    aria-label={`Ler notícia: ${news.titulo}`}
+                    onClick={() => setSelectedNews(news)}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setSelectedNews(news);
+                      }
+                    }}
+                    className="soft-card flex min-w-0 cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/80 text-left outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                  >
                     <div className="relative aspect-[16/9] overflow-hidden bg-slate-800">
                       {news.imagemUrl ? (
                         <img src={news.imagemUrl} alt={news.descricaoImagem || news.titulo} loading="lazy" className="h-full w-full object-cover" />
@@ -103,14 +170,9 @@ export default function NewsSection() {
                         </div>
                       ) : null}
 
-                      <div className="mt-auto grid grid-cols-3 gap-2 border-t border-white/10 pt-4 text-xs text-slate-400">
-                        {metrics.map(({ label, value, Icon }) => (
-                          <span key={label} title={label} className="inline-flex min-w-0 items-center gap-1.5">
-                            <Icon size={14} className="shrink-0 text-cyan-300" />
-                            <span className="truncate">{formatCount(value)}</span>
-                          </span>
-                        ))}
-                      </div>
+                      <span className="mt-auto inline-flex items-center gap-2 border-t border-white/10 pt-4 text-sm font-bold text-cyan-300">
+                        Ler notícia <ArrowUpRight size={16} />
+                      </span>
                     </div>
                   </article>
                 );
@@ -133,6 +195,7 @@ export default function NewsSection() {
           </>
         )}
       </div>
+      {selectedNews && <NewsDetail news={selectedNews} onClose={() => setSelectedNews(null)} />}
     </section>
   );
 }
