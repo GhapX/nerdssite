@@ -11,11 +11,6 @@ a apresentação acadêmica e a publicação em um servidor estático.
 - Lista pesquisável de integrantes.
 - Layout responsivo para computador e celular.
 
-O conteúdo é carregado de arquivos locais do projeto. Não há API, banco de
-dados, login, painel administrativo ou serviço de IA. As imagens de exemplo
-usam URLs públicas; para publicar, substitua-as por imagens autorizadas e
-hospedadas no próprio servidor ou em uma CDN.
-
 ## Requisitos
 
 - Node.js 20 ou superior.
@@ -41,10 +36,6 @@ Edite [`src/data/portfolio.ts`](src/data/portfolio.ts):
   cada projeto.
 - `MEMBER_NAMES` guarda os nomes exibidos na seção de integrantes.
 
-Antes de publicar, confirme com a equipe que os nomes, as descrições, os links
-e as imagens estão corretos e que há autorização para divulgá-los. Substitua
-as imagens demonstrativas por arquivos próprios ou URLs diretas e permanentes
-de uma CDN; nenhuma integração ou chave de API é necessária para exibi-las.
 
 ## Gerar e conferir a versão de publicação
 
@@ -56,15 +47,6 @@ npm run preview
 O comando de build gera o site pronto para publicação na pasta `dist/`. O
 preview serve essa versão localmente para uma última conferência.
 
-## Publicar no servidor da faculdade
-
-O servidor precisa apenas servir arquivos estáticos. Envie o conteúdo de
-`dist/` para a pasta pública do servidor (por exemplo, `public_html`, conforme
-a configuração da faculdade). Não é necessário instalar Node.js no servidor,
-configurar banco de dados ou manter um processo de API em execução.
-
-Se a hospedagem exigir um diretório de publicação, use `dist`. Em plataformas
-com build automático, configure:
 
 | Configuração | Valor |
 | --- | --- |
@@ -72,7 +54,3 @@ com build automático, configure:
 | Comando de build | `npm run build` |
 | Diretório de publicação | `dist` |
 
-Confira com a equipe de infraestrutura da faculdade se o servidor aceita
-hospedagem estática e qual é o procedimento para enviar os arquivos. Depois da
-publicação, teste os links e as imagens usando a rede e os dispositivos da
-apresentação.
