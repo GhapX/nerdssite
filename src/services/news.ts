@@ -43,3 +43,15 @@ export async function fetchActionNews(page: number, size: number, signal: AbortS
 
   return result;
 }
+
+export async function fetchActionNewsById(id: string, signal: AbortSignal): Promise<ActionNews> {
+  for (let page = 0; ; page += 1) {
+    const result = await fetchActionNews(page, 200, signal);
+    const news = result.content.find(item => item.id === id);
+
+    if (news) return news;
+    if (result.last) break;
+  }
+
+  throw new Error('A notícia solicitada não foi encontrada.');
+}
