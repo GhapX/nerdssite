@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react';
 import { ArrowDown, ArrowUpRight, FlaskConical, Instagram, Search, Users } from 'lucide-react';
 import { MEMBERS, PROJECTS } from './data/portfolio';
+import NewsSection from './components/NewsSection';
 import nerdsLogo from './assets/NerdsLogo.png';
 import './styles.css';
 
 const navigation = [
   { href: '#projeto', label: 'O projeto' },
   { href: '#portfolio', label: 'Portfólio' },
+  { href: '#noticias', label: 'Notícias' },
   { href: '#integrantes', label: 'Integrantes' }
 ];
 
@@ -96,6 +98,8 @@ export default function App() {
             ))}
           </div>
         </section>
+
+        <NewsSection />
 
         <section id="portfolio" className="scroll-mt-24 border-y border-white/5 bg-slate-950/35">
           <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
