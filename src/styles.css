@@ -51,6 +51,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .soft-card { transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
 .soft-card:hover { transform: translateY(-4px); border-color: rgba(103, 232, 249, .48); box-shadow: 0 20px 45px rgba(0, 0, 0, .22); }
 .stack-tag { border-radius: 999px; background: rgba(34, 211, 238, .1); padding: .3rem .65rem; color: #a5f3fc; font-size: .68rem; font-weight: 700; }
+.news-card__excerpt { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
 
 @keyframes drift { 0%, 100% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(2rem, -1rem, 0) scale(1.08); } }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
