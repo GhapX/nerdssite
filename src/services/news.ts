@@ -25,12 +25,12 @@ export interface ActionNewsPage {
   empty: boolean;
 }
 
-const ACTION_ID = '6f1b3d2b-8d27-4ec9-bd9c-b816f7db81c1';
-const NEWS_ENDPOINT = 'https://gex.dev.nerds.cloudns.be/api/noticia/acao';
+export const ACTION_ID = '6f1b3d2b-8d27-4ec9-bd9c-b816f7db81c1';
+const NEWS_ENDPOINT = 'https://gex.dev.nerds.cloudns.be/api/noticia';
 
 export async function fetchActionNews(page: number, size: number, signal: AbortSignal): Promise<ActionNewsPage> {
   const params = new URLSearchParams({ page: String(page), size: String(size) });
-  const response = await fetch(`${NEWS_ENDPOINT}/${ACTION_ID}?${params}`, { signal });
+  const response = await fetch(`${NEWS_ENDPOINT}/acao/${ACTION_ID}?${params}`, { signal });
 
   if (!response.ok) {
     throw new Error(`A API respondeu com erro ${response.status}.`);
@@ -45,13 +45,19 @@ export async function fetchActionNews(page: number, size: number, signal: AbortS
 }
 
 export async function fetchActionNewsById(id: string, signal: AbortSignal): Promise<ActionNews> {
-  for (let page = 0; ; page += 1) {
-    const result = await fetchActionNews(page, 200, signal);
-    const news = result.content.find(item => item.id === id);
+  const response = await fetch(`${NEWS_ENDPOINT}/${encodeURIComponent(id)}`, { signal });
 
-    if (news) return news;
-    if (result.last) break;
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error('A notícia solicitada não foi encontrada.');
+    }
+    throw new Error(`A API respondeu com erro ${response.status}.`);
   }
 
-  throw new Error('A notícia solicitada não foi encontrada.');
+  const result = await response.json() as ActionNews;
+  if (!result || result.id !== id) {
+    throw new Error('A API não retornou a notícia solicitada.');
+  }
+
+  return result;
 }

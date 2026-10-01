@@ -3,6 +3,7 @@ import { ArrowDown, ArrowUpRight, FlaskConical, Instagram, Search, Users } from 
 import { MEMBERS, PROJECTS } from './data/portfolio';
 import NewsArticlePage from './components/NewsArticlePage';
 import NewsSection from './components/NewsSection';
+import VacancySection from './components/VacancySection';
 import nerdsLogo from './assets/NerdsLogo.png';
 import './styles.css';
 
@@ -10,6 +11,7 @@ const navigation = [
   { href: '#projeto', label: 'O projeto' },
   { href: '#portfolio', label: 'Portfólio' },
   { href: '#noticias', label: 'Notícias' },
+  { href: '#vagas', label: 'Vagas' },
   { href: '#integrantes', label: 'Integrantes' }
 ];
 
@@ -104,6 +106,7 @@ export default function App() {
         </section>
 
         <NewsSection />
+        <VacancySection />
 
         <section id="portfolio" className="scroll-mt-24 border-y border-white/5 bg-slate-950/35">
           <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
