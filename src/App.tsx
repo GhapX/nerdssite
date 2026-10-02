@@ -12,9 +12,9 @@ import './styles.css';
 
 const navigation = [
   { href: '#projeto', label: 'O projeto' },
-  { href: '#portfolio', label: 'Portfólio' },
   { href: '#noticias', label: 'Notícias' },
   { href: '#vagas', label: 'Vagas' },
+  { href: '#portfolio', label: 'Portfólio' },
   { href: '#integrantes', label: 'Integrantes' },
   { href: '#membros-anteriores', label: 'Membros anteriores' }
 ];
