@@ -5,6 +5,7 @@
   "installCommand": "npm install",
   "rewrites": [
     { "source": "/noticias/(.*)", "destination": "/" },
-    { "source": "/vagas/(.*)", "destination": "/" }
+    { "source": "/vagas/(.*)", "destination": "/" },
+    { "source": "/projetos/(.*)", "destination": "/" }
   ]
 }

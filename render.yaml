@@ -11,3 +11,6 @@ services:
       - type: rewrite
         source: /vagas/*
         destination: /index.html
+      - type: rewrite
+        source: /projetos/*
+        destination: /index.html

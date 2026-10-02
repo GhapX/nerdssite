@@ -1,19 +1,16 @@
 import type { Member, Project } from '../types';
+import marcosViniciusPhoto from '../assets/Fotos Membros Antigos/Marcos-Vinicius.jpeg';
+import gexImage from '../assets/gex.jpg';
 
 export const PROJECTS: Project[] = [
   {
     id: 1,
+    slug: 'sistema-gex',
     title: 'Sistema GEX',
     description: 'Plataforma de apoio à gestão e ao acompanhamento das ações de extensão universitária da UFC.',
     stack: ['Engenharia de Software', 'Extensão'],
-    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=1200'
-  },
-  {
-    id: 2,
-    title: 'Mapa do Vale',
-    description: 'Iniciativa para aproximar desafios da região do Vale do Jaguaribe de pessoas interessadas em construir soluções.',
-    stack: ['Comunidade', 'Tecnologia'],
-    image: 'https://images.unsplash.com/photo-1524666041070-9c876415a7b4?auto=format&fit=crop&q=80&w=1200'
+    image: gexImage,
+    url: 'https://gex.ufc.br/'
   }
 ];
 
@@ -23,7 +20,7 @@ const MEMBER_NAMES = [
   'Emílio', 'Erik Oliveira Maia', 'Ernesto', 'Gabriela Lima Silva', 'Gabriela Sousa de Oliveira',
   'Guilherme Henrique Alves Pinto', 'Gustavo Gabriel Rocha e Silva', 'João Emanuel Leite Fortaleza',
   'João Gabriel Frota de Moura Santos', 'Joel', 'José Ednardo Dantas Neto', 'Kauê Borges',
-  'Lucas de Araujo Ferreira Maia', 'Lucas Rodrigues', 'Luis Rajzer', 'Marcos Davi Sena Pinheiro',
+  'Lucas de Araujo Ferreira Maia', 'Lucas Rodrigues', 'Luis Rajzer', 'Marcos Davi Sena Pinheiro', 'Marcos Vinicius',
   'Marcus Linhares', 'Mateus', 'Matheus de Assis Oliveira', 'Miguel Alves de Sousa',
   'Miquéias Santiago de Almeida', 'Pedro Gabriel Quadros de Jesus', 'Pedro Henrique Zacarias dos Santos',
   'Romeu Rôsso', 'Thiago Celestino de Albuquerque', 'Thiago Viana Bezerra', 'Wallison Gomes Martins',
@@ -57,14 +54,20 @@ const photoUrlByName = new Map(
     return [normalizeName(name), url];
   })
 );
+photoUrlByName.set(normalizeName('Marcos Vinicius'), marcosViniciusPhoto);
+
+const memberRoleByName: Record<string, string> = {
+  [normalizeName('Marcos Vinicius')]: 'Coordenador do projeto'
+};
 
 export const MEMBERS: Member[] = MEMBER_NAMES.map((name, index) => {
   const photoName = photoNameByMemberName[normalizeName(name)] ?? normalizeName(name);
+  const normalizedName = normalizeName(name);
 
   return {
     id: index + 1,
     name,
-    role: 'Integrante NERDS',
+    role: memberRoleByName[normalizedName] ?? 'Integrante NERDS',
     image: photoUrlByName.get(photoName)
   };
 });
