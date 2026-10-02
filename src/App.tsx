@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { ArrowDown, ArrowUpRight, FlaskConical, Instagram, Search, Users } from 'lucide-react';
 import { MEMBERS, PROJECTS } from './data/portfolio';
+import AlumniSection from './components/AlumniSection';
 import NewsArticlePage from './components/NewsArticlePage';
 import NewsSection from './components/NewsSection';
+import ProjectArticlePage from './components/ProjectArticlePage';
 import VacancyArticlePage from './components/VacancyArticlePage';
 import VacancySection from './components/VacancySection';
 import nerdsLogo from './assets/NerdsLogo.png';
@@ -13,7 +15,8 @@ const navigation = [
   { href: '#portfolio', label: 'Portfólio' },
   { href: '#noticias', label: 'Notícias' },
   { href: '#vagas', label: 'Vagas' },
-  { href: '#integrantes', label: 'Integrantes' }
+  { href: '#integrantes', label: 'Integrantes' },
+  { href: '#membros-anteriores', label: 'Membros anteriores' }
 ];
 
 const initials = (name: string) =>
@@ -23,9 +26,11 @@ export default function App() {
   const [memberSearch, setMemberSearch] = useState('');
   const newsRoute = window.location.pathname.match(/^\/noticias\/([^/]+)\/?$/);
   const vacancyRoute = window.location.pathname.match(/^\/vagas\/([^/]+)\/?$/);
+  const projectRoute = window.location.pathname.match(/^\/projetos\/([^/]+)\/?$/);
   const newsId = newsRoute ? decodeURIComponent(newsRoute[1]) : null;
   const vacancyId = vacancyRoute ? decodeURIComponent(vacancyRoute[1]) : null;
-  const isDetailPage = Boolean(newsId || vacancyId);
+  const projectSlug = projectRoute ? decodeURIComponent(projectRoute[1]) : null;
+  const isDetailPage = Boolean(newsId || vacancyId || projectSlug);
   const visibleMembers = useMemo(() => {
     const term = memberSearch.trim().toLocaleLowerCase('pt-BR');
     if (!term) return MEMBERS;
@@ -51,7 +56,7 @@ export default function App() {
       </header>
 
       <main>
-        {newsId ? <NewsArticlePage newsId={newsId} /> : vacancyId ? <VacancyArticlePage vacancyId={vacancyId} /> : <>
+        {newsId ? <NewsArticlePage newsId={newsId} /> : vacancyId ? <VacancyArticlePage vacancyId={vacancyId} /> : projectSlug ? <ProjectArticlePage slug={projectSlug} /> : <>
         <section id="inicio" className="home-hero relative isolate overflow-hidden">
           <div className="hero-grid pointer-events-none absolute inset-0" />
           <div className="home-hero__orb home-hero__orb--one" />
@@ -124,24 +129,24 @@ export default function App() {
             <div className="mt-10 grid gap-6 md:grid-cols-2">
               {PROJECTS.map((project, index) => (
                 <article key={project.id} className="project-card soft-card overflow-hidden rounded-3xl border border-slate-700 bg-slate-800/80">
-                  <div className="relative h-56 overflow-hidden bg-slate-900 sm:h-64">
-                    <img src={project.image} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
-                    <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-xs font-bold text-cyan-200 backdrop-blur">
-                      Projeto {String(index + 1).padStart(2, '0')}
-                    </span>
-                  </div>
-                  <div className="p-6 sm:p-8">
-                    <div className="flex flex-wrap gap-2">
-                      {project.stack.map(tag => <span key={tag} className="stack-tag">{tag}</span>)}
+                  <a href={`/projetos/${project.slug}`} className="group block h-full">
+                    <div className="relative h-56 overflow-hidden bg-slate-900 sm:h-64">
+                      <img src={project.image} alt={project.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-xs font-bold text-cyan-200 backdrop-blur">
+                        Projeto {String(index + 1).padStart(2, '0')}
+                      </span>
                     </div>
-                    <h3 className="font-display mt-5 text-2xl font-bold text-white">{project.title}</h3>
-                    <p className="mt-3 text-sm leading-7 text-slate-300">{project.description}</p>
-                    {project.url && (
-                      <a href={project.url} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-cyan-300 hover:text-cyan-200">
-                        Saiba mais <ArrowUpRight size={16} />
-                      </a>
-                    )}
-                  </div>
+                    <div className="p-6 sm:p-8">
+                      <div className="flex flex-wrap gap-2">
+                        {project.stack.map(tag => <span key={tag} className="stack-tag">{tag}</span>)}
+                      </div>
+                      <h3 className="font-display mt-5 text-2xl font-bold text-white">{project.title}</h3>
+                      <p className="mt-3 text-sm leading-7 text-slate-300">{project.description}</p>
+                      <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-cyan-300 group-hover:text-cyan-200">
+                        Conhecer o projeto <ArrowUpRight size={16} />
+                      </span>
+                    </div>
+                  </a>
                 </article>
               ))}
             </div>
@@ -177,6 +182,7 @@ export default function App() {
             <p className="mt-8 rounded-2xl border border-dashed border-slate-700 p-8 text-center text-sm text-slate-400">Nenhum integrante encontrado com esse nome.</p>
           )}
         </section>
+        <AlumniSection />
         </>}
       </main>
 
