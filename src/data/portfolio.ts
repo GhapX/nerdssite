@@ -1,30 +1,24 @@
 import type { Member, Project } from '../types';
-import marcosViniciusPhoto from '../assets/Fotos Membros Antigos/Marcos-Vinicius.jpeg';
 import gexImage from '../assets/gex.jpg';
 
 export const PROJECTS: Project[] = [
   {
     id: 1,
-    slug: 'sistema-gex',
-    title: 'Sistema GEX',
-    description: 'Plataforma de apoio à gestão e ao acompanhamento das ações de extensão universitária da UFC.',
-    stack: ['Engenharia de Software', 'Extensão'],
+    slug: 'gex-web',
+    title: 'GEX Web',
+    description: 'Sistema web para apoiar a gestão e o acompanhamento das ações de extensão universitária da UFC, em parceria com a PREX.',
+    stack: ['Aplicação web', 'Extensão', 'PREX'],
     image: gexImage,
     url: 'https://gex.ufc.br/'
+  },
+  {
+    id: 2,
+    slug: 'gex-app',
+    title: 'GEX App',
+    description: 'Aplicativo do GEX desenvolvido pelo NERDS em parceria com a PREX, como uma frente própria do portfólio.',
+    stack: ['Aplicativo', 'Extensão', 'PREX'],
+    image: gexImage
   }
-];
-
-const MEMBER_NAMES = [
-  'Alan Victor Soares Vieira', 'Ana Letícia', 'Antonio Guilherme Gomes Barbosa', 'Antônio Sidney', 'Arthur',
-  'Caio Rebouças da Costa', 'Caio Rian Pereira dos Santos', 'Cauan Halison Arantes de Oliveira', 'David',
-  'Emílio', 'Erik Oliveira Maia', 'Ernesto', 'Gabriela Lima Silva', 'Gabriela Sousa de Oliveira',
-  'Guilherme Henrique Alves Pinto', 'Gustavo Gabriel Rocha e Silva', 'João Emanuel Leite Fortaleza',
-  'João Gabriel Frota de Moura Santos', 'Joel', 'José Ednardo Dantas Neto', 'Kauê Borges',
-  'Lucas de Araujo Ferreira Maia', 'Lucas Rodrigues', 'Luis Rajzer', 'Marcos Davi Sena Pinheiro', 'Marcos Vinicius',
-  'Marcus Linhares', 'Mateus', 'Matheus de Assis Oliveira', 'Miguel Alves de Sousa',
-  'Miquéias Santiago de Almeida', 'Pedro Gabriel Quadros de Jesus', 'Pedro Henrique Zacarias dos Santos',
-  'Romeu Rôsso', 'Thiago Celestino de Albuquerque', 'Thiago Viana Bezerra', 'Wallison Gomes Martins',
-  'YAGO THAYSON DE SOUSA'
 ];
 
 const normalizeName = (name: string) => name
@@ -39,35 +33,63 @@ const memberPhotos = import.meta.glob<string>('../assets/Fotos - Time NERDS 2026
   import: 'default'
 });
 
-const photoNameByMemberName: Record<string, string> = {
-  [normalizeName('Gabriela Lima Silva')]: normalizeName('Gabriel Lima Silva'),
-  [normalizeName('João Emanuel Leite Fortaleza')]: normalizeName('João Emanoel Leite Fortaleza'),
-  [normalizeName('Luis Rajzer')]: normalizeName('Luis Raizer'),
-  [normalizeName('Romeu Rôsso')]: normalizeName('Romeu Róseo Araújo'),
-  [normalizeName('Wallison Gomes Martins')]: normalizeName('Wallison Breno Gomes Martins')
+const memberNameByPhotoAlias: Record<string, string> = {
+  [normalizeName('Arthur')]: 'Arthur Levi Frota Coelho',
+  [normalizeName('Carlos Roberto Carvalho Araujo Junior')]: 'Carlos Roberto Carvalho Araujo Junior',
+  [normalizeName('David Ferreira da Silva')]: 'David Ferreira da Silva',
+  [normalizeName('Emilio')]: 'Emilio de Aquino Calvet',
+  [normalizeName('Emylli Haika Santiago Torres')]: 'Emylli Haika Santiago Torres',
+  [normalizeName('Italo Crispim Rodrigues')]: 'Italo Crispim Rodrigues',
+  [normalizeName('Iuri Vinicius Goncalves Teixeira')]: 'Iuri Vinicius Goncalves Teixeira',
+  [normalizeName('Marcos Vinicius')]: 'Marcos Vinicius de Andrade Lima',
+  [normalizeName('Marcus Linhares')]: 'Marcus Vinicius Linhares de Lima',
+  [normalizeName('Arthur Levi Frota Coelho')]: 'Arthur Levi Frota Coelho',
+  [normalizeName('Emilio de Aquino Calvet')]: 'Emilio de Aquino Calvet',
+  [normalizeName('Pedro Henrique Carvalho')]: 'Pedro Henrique Ribeiro Carvalho',
+  [normalizeName('Pedro Henrique Ribeiro Carvalho')]: 'Pedro Henrique Ribeiro Carvalho',
+  [normalizeName('Victor Ruan Rocha Rodrigues')]: 'Victor Ruan Rocha Rodrigues',
+  [normalizeName('Vitoria Crispim')]: 'Vitoria Crispim',
+  [normalizeName('Yago Thayson de Sousa')]: 'Yago Thayson de Sousa'
 };
 
-const photoUrlByName = new Map(
-  Object.entries(memberPhotos).map(([path, url]) => {
-    const filename = path.split('/').pop() ?? '';
-    const name = filename.replace(/\.[^.]+$/, '').split(' - ')[0];
-    return [normalizeName(name), url];
-  })
-);
-photoUrlByName.set(normalizeName('Marcos Vinicius'), marcosViniciusPhoto);
+const membersByName = new Map<string, Member>();
 
-const memberRoleByName: Record<string, string> = {
-  [normalizeName('Marcos Vinicius')]: 'Coordenador do projeto'
-};
+for (const [path, image] of Object.entries(memberPhotos)) {
+  const filename = path.split('/').pop() ?? '';
+  const baseName = filename.replace(/\.[^.]+$/, '');
+  const [rawName, ...roleParts] = baseName.split(' - ');
+  const cleanedName = rawName
+    .replace(/[-_](?:M[IÍ]DIAS|Backend)$/i, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const normalizedName = normalizeName(cleanedName);
+  const name = memberNameByPhotoAlias[normalizedName] ?? cleanedName;
+  const key = normalizeName(name);
 
-export const MEMBERS: Member[] = MEMBER_NAMES.map((name, index) => {
-  const photoName = photoNameByMemberName[normalizeName(name)] ?? normalizeName(name);
-  const normalizedName = normalizeName(name);
+  if (!membersByName.has(key)) {
+    membersByName.set(key, {
+      id: membersByName.size + 1,
+      name,
+      role: key === normalizeName('Marcos Vinicius de Andrade Lima')
+        ? 'Coordenador do projeto'
+        : roleParts.join(' - ').trim() || 'Integrante NERDS',
+      image
+    });
+  }
+}
 
-  return {
-    id: index + 1,
-    name,
-    role: memberRoleByName[normalizedName] ?? 'Integrante NERDS',
-    image: photoUrlByName.get(photoName)
-  };
-});
+export const MEMBERS: Member[] = Array.from(membersByName.values());
+export const CURRENT_MEMBER_NAME_ALIASES = [
+  'Arthur',
+  'Emílio',
+  'Erik',
+  'Marcus Vinicius',
+  'Marcus Linhares',
+  'Emilio de Aquino Calvet',
+  'José Ednaldo',
+  'Pedro Henrique',
+  'Thiago-Celestino',
+  'Thiago-Viana',
+  'Marcos-Vinicius'
+];

@@ -2,8 +2,8 @@ import { ArrowLeft, ArrowUpRight, BookOpen, FlaskConical, Handshake, Target } fr
 import { PROJECTS } from '../data/portfolio';
 
 const projectArticle = {
-  introduction: 'O projeto de extensão Núcleo Especializado em Reengenharia e Desenvolvimento de Software (NERDS), realizado no Campus Russas da Universidade Federal do Ceará, investiga e aplica tecnologias inovadoras na área de software. Com Engenharia de Software e Ciência de Dados, busca modernizar sistemas públicos, apoiar decisões baseadas em dados e promover o desenvolvimento tecnológico do Vale do Jaguaribe e do Ceará.',
-  partnership: 'Entre suas iniciativas estão a reengenharia de sistemas legados e o desenvolvimento de novos softwares. Em parceria com a Pró-Reitoria de Extensão (PREX), o NERDS desenvolve o sistema GEX, que permitirá acompanhar de forma integrada e em tempo real as ações de extensão da UFC e apoiar coordenadores na gestão de equipes e participantes da comunidade.',
+  introduction: 'O NERDS é um projeto de extensão da Universidade Federal do Ceará, Campus de Russas, idealizado e coordenado pelo Prof. Dr. Marcos Vinicius de Andrade Lima. Desde 2023, o núcleo aplica Engenharia de Software e Ciência de Dados em desafios reais, promovendo a integração entre universidade, setor público e sociedade.',
+  partnership: 'Em parceria com a Pró-Reitoria de Extensão (PREX), o NERDS desenvolve duas frentes do GEX: a plataforma web, acessível pelo navegador, e o aplicativo GEX. São projetos distintos que contribuem para a gestão e o acompanhamento das ações de extensão da UFC.',
   pillars: [
     {
       title: 'Extensão',
@@ -52,7 +52,7 @@ export default function ProjectArticlePage({ slug }: { slug: string }) {
         <p className="mt-6 text-lg leading-8 text-slate-300">{projectArticle.introduction}</p>
         {project.url && (
           <a href={project.url} target="_blank" rel="noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-lg bg-cyan-400 px-4 py-2.5 text-sm font-bold text-slate-950 transition-colors hover:bg-cyan-300">
-            Acessar o Sistema GEX <ArrowUpRight size={16} />
+            Acessar {project.title} <ArrowUpRight size={16} />
           </a>
         )}
       </header>

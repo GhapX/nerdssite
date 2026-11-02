@@ -16,7 +16,7 @@ const navigation = [
   { href: '#vagas', label: 'Vagas' },
   { href: '#portfolio', label: 'Portfólio' },
   { href: '#integrantes', label: 'Integrantes' },
-  { href: '#membros-anteriores', label: 'Membros anteriores' }
+  { href: '/ex-integrantes', label: 'Ex-integrantes' }
 ];
 
 const initials = (name: string) =>
@@ -27,14 +27,17 @@ export default function App() {
   const newsRoute = window.location.pathname.match(/^\/noticias\/([^/]+)\/?$/);
   const vacancyRoute = window.location.pathname.match(/^\/vagas\/([^/]+)\/?$/);
   const projectRoute = window.location.pathname.match(/^\/projetos\/([^/]+)\/?$/);
+  const alumniRoute = /^\/ex-integrantes\/?$/.test(window.location.pathname);
   const newsId = newsRoute ? decodeURIComponent(newsRoute[1]) : null;
   const vacancyId = vacancyRoute ? decodeURIComponent(vacancyRoute[1]) : null;
   const projectSlug = projectRoute ? decodeURIComponent(projectRoute[1]) : null;
-  const isDetailPage = Boolean(newsId || vacancyId || projectSlug);
+  const isDetailPage = Boolean(newsId || vacancyId || projectSlug || alumniRoute);
+  const coordinator = MEMBERS.find(member => member.role === 'Coordenador do projeto');
   const visibleMembers = useMemo(() => {
     const term = memberSearch.trim().toLocaleLowerCase('pt-BR');
-    if (!term) return MEMBERS;
-    return MEMBERS.filter(member => member.name.toLocaleLowerCase('pt-BR').includes(term));
+    const teamMembers = MEMBERS.filter(member => member.role !== 'Coordenador do projeto');
+    if (!term) return teamMembers;
+    return teamMembers.filter(member => member.name.toLocaleLowerCase('pt-BR').includes(term));
   }, [memberSearch]);
 
   return (
@@ -47,7 +50,7 @@ export default function App() {
           </a>
           <nav aria-label="Navegação principal" className="flex items-center gap-1 overflow-x-auto">
             {navigation.map(item => (
-              <a key={item.href} href={isDetailPage ? `/${item.href}` : item.href} className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-cyan-300 sm:px-4">
+              <a key={item.href} href={item.href.startsWith('/') ? item.href : isDetailPage ? `/${item.href}` : item.href} className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-cyan-300 sm:px-4">
                 {item.label}
               </a>
             ))}
@@ -56,7 +59,7 @@ export default function App() {
       </header>
 
       <main>
-        {newsId ? <NewsArticlePage newsId={newsId} /> : vacancyId ? <VacancyArticlePage vacancyId={vacancyId} /> : projectSlug ? <ProjectArticlePage slug={projectSlug} /> : <>
+        {newsId ? <NewsArticlePage newsId={newsId} /> : vacancyId ? <VacancyArticlePage vacancyId={vacancyId} /> : projectSlug ? <ProjectArticlePage slug={projectSlug} /> : alumniRoute ? <AlumniSection /> : <>
         <section id="inicio" className="home-hero relative isolate overflow-hidden">
           <div className="hero-grid pointer-events-none absolute inset-0" />
           <div className="home-hero__orb home-hero__orb--one" />
@@ -84,7 +87,7 @@ export default function App() {
               <div className="constellation-orbit constellation-orbit--inner" />
               <span className="constellation-node constellation-node--research">Pesquisa</span>
               <span className="constellation-node constellation-node--extension">Extensão</span>
-              <span className="constellation-node constellation-node--formation">Formação</span>
+              <span className="constellation-node constellation-node--formation">Ensino</span>
               <div className="constellation-core"><img src={nerdsLogo} alt="NERDS UFC" className="constellation-logo" /></div>
               <p className="constellation-caption">Universidade Federal do Ceará · Campus Russas</p>
             </div>
@@ -96,14 +99,14 @@ export default function App() {
             <p className="eyebrow"><FlaskConical size={15} /> O projeto</p>
             <h2 className="font-display mt-4 text-3xl font-bold text-white sm:text-5xl">Aprender, pesquisar e construir em conjunto.</h2>
             <p className="mt-6 text-base leading-8 text-slate-300 sm:text-lg">
-              O NERDS é um projeto universitário da UFC — Campus Russas. Aplicamos Engenharia de Software e Ciência de Dados em desafios reais, aproximando universidade, setor público e comunidade.
+              O Núcleo Especializado em Reengenharia e Desenvolvimento de Software (NERDS) é um projeto de extensão da Universidade Federal do Ceará (UFC), Campus de Russas, idealizado e coordenado pelo Prof. Dr. Marcos Vinicius de Andrade Lima. Desde 2023, aplicamos conhecimentos de Engenharia de Software e Ciência de Dados na resolução de desafios reais, aproximando universidade, setor público e sociedade por meio de soluções tecnológicas.
             </p>
           </div>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {[
-              { number: '01', title: 'Pesquisa', text: 'Investigamos métodos e tecnologias para compreender sistemas e resolver problemas.' },
-              { number: '02', title: 'Desenvolvimento', text: 'Projetamos e construímos software com atenção às pessoas que vão utilizá-lo.' },
-              { number: '03', title: 'Formação', text: 'Aprendemos na prática, colaborando em projetos e compartilhando conhecimento.' }
+              { number: '01', title: 'Pesquisa', text: 'Investigamos tecnologias e métodos para compreender problemas e produzir conhecimento aplicado.' },
+              { number: '02', title: 'Extensão', text: 'Colaboramos com instituições públicas e a comunidade para criar soluções para desafios reais.' },
+              { number: '03', title: 'Ensino', text: 'Promovemos a formação prática dos estudantes, conectando conhecimentos acadêmicos e experiência em projetos.' }
             ].map(item => (
               <article key={item.number} className="soft-card rounded-2xl border border-slate-700 bg-slate-800/70 p-6">
                 <span className="font-display text-sm font-bold text-cyan-300">{item.number}</span>
@@ -166,6 +169,21 @@ export default function App() {
               <input value={memberSearch} onChange={event => setMemberSearch(event.target.value)} placeholder="Buscar integrante..." className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-slate-500" />
             </label>
           </div>
+          {coordinator && (
+            <article className="soft-card mx-auto mt-10 flex max-w-xl flex-col items-center rounded-2xl border border-cyan-300/30 bg-slate-800/80 p-6 text-center sm:flex-row sm:text-left">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-cyan-300/30 bg-cyan-400/10 font-display text-xl font-bold text-cyan-200">
+                {coordinator.image ? <img src={coordinator.image} alt="" className="h-full w-full object-cover" /> : initials(coordinator.name)}
+              </div>
+              <div className="sm:ml-5">
+                <p className="eyebrow mt-4 sm:mt-0">Coordenação do projeto</p>
+                <h3 className="mt-2 text-lg font-bold text-white">{coordinator.name}</h3>
+                <p className="mt-1 text-sm text-slate-400">{coordinator.role}</p>
+                <a href="mailto:marcos.vinicius@ufc.br" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition-colors hover:text-cyan-200">
+                  Entrar em contato <ArrowUpRight size={15} />
+                </a>
+              </div>
+            </article>
+          )}
           {visibleMembers.length > 0 ? (
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
               {visibleMembers.map(member => (
@@ -182,7 +200,6 @@ export default function App() {
             <p className="mt-8 rounded-2xl border border-dashed border-slate-700 p-8 text-center text-sm text-slate-400">Nenhum integrante encontrado com esse nome.</p>
           )}
         </section>
-        <AlumniSection />
         </>}
       </main>
 
