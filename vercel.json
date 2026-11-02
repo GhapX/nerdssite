@@ -6,6 +6,10 @@
   "rewrites": [
     { "source": "/noticias/(.*)", "destination": "/" },
     { "source": "/vagas/(.*)", "destination": "/" },
-    { "source": "/projetos/(.*)", "destination": "/" }
+    { "source": "/projetos/(.*)", "destination": "/" },
+    { "source": "/ex-integrantes", "destination": "/" },
+    { "source": "/ex-integrantes/", "destination": "/" },
+    { "source": "/galeria", "destination": "/" },
+    { "source": "/galeria/", "destination": "/" }
   ]
 }

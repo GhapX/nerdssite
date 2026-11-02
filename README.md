@@ -10,6 +10,7 @@ a apresentação acadêmica e a publicação em um servidor estático.
 - Portfólio com links para os projetos.
 - Lista pesquisável de integrantes.
 - Página dedicada aos ex-integrantes.
+- Galeria de fotos.
 - Layout responsivo para computador e celular.
 
 ## Requisitos
@@ -39,6 +40,8 @@ Edite [`src/data/portfolio.ts`](src/data/portfolio.ts):
 - As informações dos ex-integrantes e suas fotos são lidas de
   `src/assets/Fotos Membros Antigos/`; o portfólio está separado em `GEX Web`
   e `GEX App`.
+- A galeria exibe automaticamente as imagens de `src/assets/eventos/`, incluindo
+  arquivos em subpastas de eventos.
 
 
 ## Gerar e conferir a versão de publicação

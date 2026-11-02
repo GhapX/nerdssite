@@ -14,3 +14,15 @@ services:
       - type: rewrite
         source: /projetos/*
         destination: /index.html
+      - type: rewrite
+        source: /ex-integrantes
+        destination: /index.html
+      - type: rewrite
+        source: /ex-integrantes/*
+        destination: /index.html
+      - type: rewrite
+        source: /galeria
+        destination: /index.html
+      - type: rewrite
+        source: /galeria/*
+        destination: /index.html

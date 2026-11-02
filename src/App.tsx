@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ArrowDown, ArrowUpRight, FlaskConical, Instagram, Search, Users } from 'lucide-react';
 import { MEMBERS, PROJECTS } from './data/portfolio';
 import AlumniSection from './components/AlumniSection';
+import GallerySection from './components/GallerySection';
 import NewsArticlePage from './components/NewsArticlePage';
 import NewsSection from './components/NewsSection';
 import ProjectArticlePage from './components/ProjectArticlePage';
@@ -16,7 +17,8 @@ const navigation = [
   { href: '#vagas', label: 'Vagas' },
   { href: '#portfolio', label: 'Portfólio' },
   { href: '#integrantes', label: 'Integrantes' },
-  { href: '/ex-integrantes', label: 'Ex-integrantes' }
+  { href: '/ex-integrantes', label: 'Ex-integrantes' },
+  { href: '/galeria', label: 'Galeria' }
 ];
 
 const initials = (name: string) =>
@@ -28,10 +30,11 @@ export default function App() {
   const vacancyRoute = window.location.pathname.match(/^\/vagas\/([^/]+)\/?$/);
   const projectRoute = window.location.pathname.match(/^\/projetos\/([^/]+)\/?$/);
   const alumniRoute = /^\/ex-integrantes\/?$/.test(window.location.pathname);
+  const galleryRoute = /^\/galeria\/?$/.test(window.location.pathname);
   const newsId = newsRoute ? decodeURIComponent(newsRoute[1]) : null;
   const vacancyId = vacancyRoute ? decodeURIComponent(vacancyRoute[1]) : null;
   const projectSlug = projectRoute ? decodeURIComponent(projectRoute[1]) : null;
-  const isDetailPage = Boolean(newsId || vacancyId || projectSlug || alumniRoute);
+  const isDetailPage = Boolean(newsId || vacancyId || projectSlug || alumniRoute || galleryRoute);
   const coordinator = MEMBERS.find(member => member.role === 'Coordenador do projeto');
   const visibleMembers = useMemo(() => {
     const term = memberSearch.trim().toLocaleLowerCase('pt-BR');
@@ -59,7 +62,7 @@ export default function App() {
       </header>
 
       <main>
-        {newsId ? <NewsArticlePage newsId={newsId} /> : vacancyId ? <VacancyArticlePage vacancyId={vacancyId} /> : projectSlug ? <ProjectArticlePage slug={projectSlug} /> : alumniRoute ? <AlumniSection /> : <>
+        {newsId ? <NewsArticlePage newsId={newsId} /> : vacancyId ? <VacancyArticlePage vacancyId={vacancyId} /> : projectSlug ? <ProjectArticlePage slug={projectSlug} /> : alumniRoute ? <AlumniSection /> : galleryRoute ? <GallerySection /> : <>
         <section id="inicio" className="home-hero relative isolate overflow-hidden">
           <div className="hero-grid pointer-events-none absolute inset-0" />
           <div className="home-hero__orb home-hero__orb--one" />
