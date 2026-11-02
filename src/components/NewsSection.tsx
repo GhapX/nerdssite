@@ -80,7 +80,7 @@ export default function NewsSection() {
                   >
                     <div className="relative aspect-[16/9] overflow-hidden bg-slate-800">
                       {news.imagemUrl ? (
-                        <img src={news.imagemUrl} alt={news.descricaoImagem || news.titulo} loading="lazy" className="h-full w-full object-cover" />
+                        <img src={news.imagemUrl} alt={news.descricaoImagem || news.titulo} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                       ) : (
                         <div className="flex h-full items-center justify-center text-cyan-300/70"><Newspaper size={36} strokeWidth={1.4} /></div>
                       )}

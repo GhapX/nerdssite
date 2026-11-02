@@ -8,7 +8,7 @@ import NewsSection from './components/NewsSection';
 import ProjectArticlePage from './components/ProjectArticlePage';
 import VacancyArticlePage from './components/VacancyArticlePage';
 import VacancySection from './components/VacancySection';
-import nerdsLogo from './assets/NerdsLogo.png';
+import nerdsLogo from './assets/NerdsLogo.webp';
 import './styles.css';
 
 const navigation = [
@@ -48,7 +48,7 @@ export default function App() {
       <header className="site-nav sticky top-0 z-40 border-b border-white/10 bg-slate-950/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
           <a href={isDetailPage ? '/' : '#inicio'} className="site-brand flex shrink-0 items-center gap-3" aria-label="NERDS — início">
-            <img src={nerdsLogo} alt="" className="site-brand__logo h-10 w-10 rounded-xl" />
+            <img src={nerdsLogo} alt="" decoding="async" className="site-brand__logo h-10 w-10 rounded-xl" />
             <span className="site-brand__name font-display text-lg font-bold text-white">NERDS<span className="ml-1 text-cyan-400">&lt;UFC&gt;</span></span>
           </a>
           <nav aria-label="Navegação principal" className="flex items-center gap-1 overflow-x-auto">
@@ -91,7 +91,7 @@ export default function App() {
               <span className="constellation-node constellation-node--research">Pesquisa</span>
               <span className="constellation-node constellation-node--extension">Extensão</span>
               <span className="constellation-node constellation-node--formation">Ensino</span>
-              <div className="constellation-core"><img src={nerdsLogo} alt="NERDS UFC" className="constellation-logo" /></div>
+              <div className="constellation-core"><img src={nerdsLogo} alt="NERDS UFC" loading="lazy" decoding="async" className="constellation-logo" /></div>
               <p className="constellation-caption">Universidade Federal do Ceará · Campus Russas</p>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function App() {
                 <article key={project.id} className="project-card soft-card overflow-hidden rounded-3xl border border-slate-700 bg-slate-800/80">
                   <a href={`/projetos/${project.slug}`} className="group block h-full">
                     <div className="relative h-56 overflow-hidden bg-slate-900 sm:h-64">
-                      <img src={project.image} alt={project.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <img src={project.image} alt={project.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-xs font-bold text-cyan-200 backdrop-blur">
                         Projeto {String(index + 1).padStart(2, '0')}
                       </span>
@@ -175,7 +175,7 @@ export default function App() {
           {coordinator && (
             <article className="soft-card mx-auto mt-10 flex max-w-xl flex-col items-center rounded-2xl border border-cyan-300/30 bg-slate-800/80 p-6 text-center sm:flex-row sm:text-left">
               <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-cyan-300/30 bg-cyan-400/10 font-display text-xl font-bold text-cyan-200">
-                {coordinator.image ? <img src={coordinator.image} alt="" className="h-full w-full object-cover" /> : initials(coordinator.name)}
+                {coordinator.image ? <img src={coordinator.image} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" /> : initials(coordinator.name)}
               </div>
               <div className="sm:ml-5">
                 <p className="eyebrow mt-4 sm:mt-0">Coordenação do projeto</p>
@@ -192,7 +192,7 @@ export default function App() {
               {visibleMembers.map(member => (
                 <article key={member.id} className="soft-card flex min-h-40 flex-col items-center justify-center rounded-2xl border border-slate-700 bg-slate-800/70 p-4 text-center">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-400/10 font-display text-lg font-bold text-cyan-200">
-                    {member.image ? <img src={member.image} alt="" className="h-full w-full rounded-full object-cover" /> : initials(member.name)}
+                    {member.image ? <img src={member.image} alt="" loading="lazy" decoding="async" className="h-full w-full rounded-full object-cover" /> : initials(member.name)}
                   </div>
                   <h3 className="mt-4 text-sm font-bold leading-5 text-white">{member.name}</h3>
                   <p className="mt-1 text-xs text-slate-400">{member.role}</p>
@@ -209,7 +209,7 @@ export default function App() {
       <footer className="border-t border-white/10 bg-slate-950/65">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div className="flex items-center gap-3">
-            <img src={nerdsLogo} alt="" className="h-9 w-9 rounded-lg" />
+            <img src={nerdsLogo} alt="" loading="lazy" decoding="async" className="h-9 w-9 rounded-lg" />
             <div>
               <p className="font-display font-bold text-white">NERDS · UFC Russas</p>
               <p className="text-xs text-slate-500">Núcleo Especializado em Reengenharia e Desenvolvimento de Software</p>

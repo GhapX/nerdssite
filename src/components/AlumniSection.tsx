@@ -49,7 +49,7 @@ export default function AlumniSection() {
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
             {visibleMembers.map(member => (
               <article key={member.id} className="soft-card flex min-h-48 flex-col items-center justify-center rounded-2xl border border-slate-700 bg-slate-900/70 p-4 text-center">
-                <img src={member.image} alt="" loading="lazy" className="h-16 w-16 rounded-full border border-white/10 object-cover" />
+                <img src={member.image} alt="" loading="lazy" decoding="async" className="h-16 w-16 rounded-full border border-white/10 object-cover" />
                 <h3 className="mt-4 text-sm font-bold leading-5 text-white">{member.name}</h3>
                 <p className="mt-1 text-xs text-slate-400">{member.role}</p>
                 {member.period && <p className="mt-2 text-xs text-cyan-200">Período: {member.period}</p>}

@@ -84,7 +84,7 @@ export default function VacancySection() {
                     <a href={`/vagas/${encodeURIComponent(vacancy.id)}`} aria-label={`Ver detalhes da vaga: ${vacancy.titulo}`} className="flex flex-1 flex-col text-left outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-inset">
                       <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-800">
                         {image ? (
-                          <img src={image} alt={vacancy.descricaoImagem || vacancy.titulo} loading="lazy" className="h-full w-full object-cover" />
+                          <img src={image} alt={vacancy.descricaoImagem || vacancy.titulo} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                         ) : (
                           <div className="flex h-full items-center justify-center text-cyan-300/70"><BriefcaseBusiness size={36} strokeWidth={1.4} /></div>
                         )}

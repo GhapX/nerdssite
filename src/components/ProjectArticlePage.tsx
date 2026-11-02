@@ -58,7 +58,7 @@ export default function ProjectArticlePage({ slug }: { slug: string }) {
       </header>
 
       <figure className="mt-10 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
-        <img src={project.image} alt="Sistema GEX, plataforma de gestão das ações de extensão da UFC" className="aspect-video w-full object-cover" />
+        <img src={project.image} alt="Sistema GEX, plataforma de gestão das ações de extensão da UFC" decoding="async" className="aspect-video w-full object-cover" />
         <figcaption className="border-t border-white/10 px-5 py-3 text-xs text-slate-400">Sistema de gestão das ações de extensão da Universidade Federal do Ceará.</figcaption>
       </figure>
 

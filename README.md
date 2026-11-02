@@ -41,7 +41,8 @@ Edite [`src/data/portfolio.ts`](src/data/portfolio.ts):
   `src/assets/Fotos Membros Antigos/`; o portfólio está separado em `GEX Web`
   e `GEX App`.
 - A galeria exibe automaticamente as imagens de `src/assets/eventos/`, incluindo
-  arquivos em subpastas de eventos.
+  arquivos em subpastas de eventos. Use imagens WebP para manter o carregamento
+  leve; as fotos existentes foram otimizadas e redimensionadas para a web.
 
 
 ## Gerar e conferir a versão de publicação

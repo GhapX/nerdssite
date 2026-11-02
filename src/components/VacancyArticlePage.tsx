@@ -76,7 +76,7 @@ export default function VacancyArticlePage({ vacancyId }: { vacancyId: string })
       <div className="mt-8 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/80">
         <div className="relative aspect-[16/9] overflow-hidden bg-slate-800">
           {image ? (
-            <img src={image} alt={vacancy.descricaoImagem || vacancy.titulo} className="h-full w-full object-cover" />
+            <img src={image} alt={vacancy.descricaoImagem || vacancy.titulo} decoding="async" className="h-full w-full object-cover" />
           ) : (
             <div className="flex h-full items-center justify-center text-cyan-300/70"><BriefcaseBusiness size={44} strokeWidth={1.4} /></div>
           )}

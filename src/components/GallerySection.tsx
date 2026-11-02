@@ -74,7 +74,7 @@ export default function GallerySection() {
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
                         {photos.map(photo => (
                           <figure key={photo.path} className="soft-card overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/70">
-                            <img src={photo.image} alt={`Registro de ${event.name}`} loading="lazy" className="aspect-square w-full object-cover" />
+                            <img src={photo.image} alt={`Registro de ${event.name}`} loading="lazy" decoding="async" className="aspect-square w-full object-cover" />
                           </figure>
                         ))}
                       </div>

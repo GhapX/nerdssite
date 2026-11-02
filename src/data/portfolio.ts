@@ -1,5 +1,5 @@
 import type { Member, Project } from '../types';
-import gexImage from '../assets/gex.jpg';
+import gexImage from '../assets/gex.webp';
 
 export const PROJECTS: Project[] = [
   {
