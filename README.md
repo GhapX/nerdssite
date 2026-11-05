@@ -43,6 +43,8 @@ Edite [`src/data/portfolio.ts`](src/data/portfolio.ts):
 - A galeria exibe automaticamente as imagens de `src/assets/eventos/`, incluindo
   arquivos em subpastas de eventos. Use imagens WebP para manter o carregamento
   leve; as fotos existentes foram otimizadas e redimensionadas para a web.
+- As páginas internas usam rotas com hash (por exemplo, `/#/galeria`) para
+  funcionar também em servidores estáticos que não oferecem fallback de rotas.
 
 
 ## Gerar e conferir a versão de publicação

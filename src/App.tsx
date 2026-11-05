@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowDown, ArrowUpRight, FlaskConical, Instagram, Search, Users } from 'lucide-react';
 import { MEMBERS, PROJECTS } from './data/portfolio';
 import AlumniSection from './components/AlumniSection';
@@ -17,8 +17,8 @@ const navigation = [
   { href: '#vagas', label: 'Vagas' },
   { href: '#portfolio', label: 'Portfólio' },
   { href: '#integrantes', label: 'Integrantes' },
-  { href: '/ex-integrantes', label: 'Ex-integrantes' },
-  { href: '/galeria', label: 'Galeria' }
+  { href: '/#/ex-integrantes', label: 'Ex-integrantes' },
+  { href: '/#/galeria', label: 'Galeria' }
 ];
 
 const initials = (name: string) =>
@@ -26,11 +26,22 @@ const initials = (name: string) =>
 
 export default function App() {
   const [memberSearch, setMemberSearch] = useState('');
-  const newsRoute = window.location.pathname.match(/^\/noticias\/([^/]+)\/?$/);
-  const vacancyRoute = window.location.pathname.match(/^\/vagas\/([^/]+)\/?$/);
-  const projectRoute = window.location.pathname.match(/^\/projetos\/([^/]+)\/?$/);
-  const alumniRoute = /^\/ex-integrantes\/?$/.test(window.location.pathname);
-  const galleryRoute = /^\/galeria\/?$/.test(window.location.pathname);
+  const [routePath, setRoutePath] = useState(() =>
+    window.location.hash.startsWith('#/') ? window.location.hash.slice(1) : window.location.pathname
+  );
+  useEffect(() => {
+    const updateRoute = () => {
+      setRoutePath(window.location.hash.startsWith('#/') ? window.location.hash.slice(1) : window.location.pathname);
+    };
+    window.addEventListener('hashchange', updateRoute);
+    return () => window.removeEventListener('hashchange', updateRoute);
+  }, []);
+
+  const newsRoute = routePath.match(/^\/noticias\/([^/]+)\/?$/);
+  const vacancyRoute = routePath.match(/^\/vagas\/([^/]+)\/?$/);
+  const projectRoute = routePath.match(/^\/projetos\/([^/]+)\/?$/);
+  const alumniRoute = /^\/ex-integrantes\/?$/.test(routePath);
+  const galleryRoute = /^\/galeria\/?$/.test(routePath);
   const newsId = newsRoute ? decodeURIComponent(newsRoute[1]) : null;
   const vacancyId = vacancyRoute ? decodeURIComponent(vacancyRoute[1]) : null;
   const projectSlug = projectRoute ? decodeURIComponent(projectRoute[1]) : null;
@@ -135,7 +146,7 @@ export default function App() {
             <div className="mt-10 grid gap-6 md:grid-cols-2">
               {PROJECTS.map((project, index) => (
                 <article key={project.id} className="project-card soft-card overflow-hidden rounded-3xl border border-slate-700 bg-slate-800/80">
-                  <a href={`/projetos/${project.slug}`} className="group block h-full">
+                  <a href={`/#/projetos/${project.slug}`} className="group block h-full">
                     <div className="relative h-56 overflow-hidden bg-slate-900 sm:h-64">
                       <img src={project.image} alt={project.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-xs font-bold text-cyan-200 backdrop-blur">

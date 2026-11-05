@@ -81,7 +81,7 @@ export default function VacancySection() {
 
                 return (
                   <article key={vacancy.id} className="soft-card flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/80">
-                    <a href={`/vagas/${encodeURIComponent(vacancy.id)}`} aria-label={`Ver detalhes da vaga: ${vacancy.titulo}`} className="flex flex-1 flex-col text-left outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-inset">
+                    <a href={`/#/vagas/${encodeURIComponent(vacancy.id)}`} aria-label={`Ver detalhes da vaga: ${vacancy.titulo}`} className="flex flex-1 flex-col text-left outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-inset">
                       <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-800">
                         {image ? (
                           <img src={image} alt={vacancy.descricaoImagem || vacancy.titulo} loading="lazy" decoding="async" className="h-full w-full object-cover" />

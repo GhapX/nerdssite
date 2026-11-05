@@ -49,7 +49,7 @@ export default function GallerySection() {
   return (
     <section className="min-h-[65vh] border-t border-white/5 bg-slate-950/35">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <a href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition-colors hover:text-cyan-200">← Voltar ao início</a>
+        <a href="/#inicio" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition-colors hover:text-cyan-200">← Voltar ao início</a>
         <header className="mt-8 max-w-3xl">
           <p className="eyebrow"><Images size={15} /> Nossa história em imagens</p>
           <h1 className="font-display mt-4 text-3xl font-bold text-white sm:text-5xl">Galeria do NERDS.</h1>

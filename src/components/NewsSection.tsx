@@ -75,7 +75,7 @@ export default function NewsSection() {
                   <a
                     key={news.id}
                     aria-label={`Ler notícia: ${news.titulo}`}
-                    href={`/noticias/${encodeURIComponent(news.id)}`}
+                    href={`/#/noticias/${encodeURIComponent(news.id)}`}
                     className="soft-card flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/80 text-left outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                   >
                     <div className="relative aspect-[16/9] overflow-hidden bg-slate-800">
